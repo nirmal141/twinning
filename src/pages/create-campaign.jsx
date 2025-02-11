@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import { motion } from 'framer-motion';
 import Header from '../components/Header';
 import CustomCursor from '../components/CustomCursor';
@@ -62,27 +62,27 @@ const customerPersonas = [
 const loadingSteps = [
   {
     text: "Loading Customer Data",
-    icon: "📊",
+    //icon: "📊",
     description: "Analyzing CRM and analytics data..."
   },
   {
     text: "Creating Digital Personas",
-    icon: "🧬",
+    //icon: "🧬",
     description: "Generating customer behavior patterns..."
   },
   {
     text: "Training AI Models",
-    icon: "🤖",
+    //icon: "🤖",
     description: "Optimizing prediction algorithms..."
   },
   {
     text: "Segmenting Audiences",
-    icon: "🎯",
+    //icon: "🎯",
     description: "Categorizing customer groups..."
   },
   {
     text: "Finalizing Results",
-    icon: "✨",
+    //icon: "✨",
     description: "Preparing simulation data..."
   }
 ];
@@ -90,27 +90,28 @@ const loadingSteps = [
 const campaignLoadingSteps = [
   {
     text: "Launching Campaign",
-    icon: "🚀",
+    //icon: "🚀",
     description: "Initializing campaign parameters..."
   },
   {
     text: "Simulating Customer Interactions",
-    icon: "🎯",
+    //icon: "🎯",
     description: "Processing potential customer responses..."
   },
   {
     text: "Analyzing Engagement Patterns",
-    icon: "📊",
+    //icon: "📊",
     description: "Evaluating customer sentiment and behavior..."
   },
   {
     text: "Generating Response Predictions",
-    icon: "🤖",
+    //icon: "🤖",
     description: "Creating AI-powered response forecasts..."
   },
   {
     text: "Finalizing Results",
-    icon: "✨",
+    //
+    // icon: "✨",
     description: "Preparing campaign insights..."
   }
 ];
@@ -202,10 +203,18 @@ const CustomerReactionBubble = ({ reaction, delay }) => (
             <div className="absolute -left-2 -top-2 transform rotate-45 w-4 h-4 bg-white/5" />
           </motion.div>
         </div>
+        
+        {/* New Textbox Below */}
+        <textarea
+          placeholder={`Talk to ${reaction.name}`}
+          className="w-full mt-4 p-2 bg-white/5 text-gray-300 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+          rows="3"
+        />
       </div>
     </div>
   </motion.div>
 );
+
 
 const LoadingOverlay = ({ currentLoadingSteps, loadingStep }) => (
   <div className="fixed inset-0 z-[99999] flex items-center justify-center">
@@ -318,11 +327,14 @@ export default function CreateCampaign() {
   const [showReactions, setShowReactions] = useState(false);
   const [navigationSource, setNavigationSource] = useState('');
 
+  const [crmImported, setcrmImported] = useState(false);
+  const [analyticsImported,setanalyticsImported] = useState(false);
+
   const tabs = [
-    { name: 'Input Campaign', step: 1 },
-    { name: 'Create Digital Personas', step: 2 },
+    { name: 'Create Digital Personas', step: 1 },
+    { name: 'Input Campaign', step: 2 },
     { name: 'Campaign simulation', step: 3 }
-  ];
+  ];  
 
   const handleImageUpload = (variation, e) => {
     const file = e.target.files[0];
@@ -504,259 +516,259 @@ export default function CreateCampaign() {
   const renderTabContent = () => {
     switch(activeTab) {
       case 0:
-        return (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold mb-2 text-white">Create A/B Test Campaign</h2>
-            <p className="text-gray-400 mb-6">Design your A/B test campaign for focus groups.</p>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Campaign Name
-                </label>
-                <input
-                  type="text"
-                  placeholder="Enter campaign name"
-                  className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  value={formData.name}
-                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Campaign Description
-                </label>
-                <textarea
-                  placeholder="Describe your campaign"
-                  rows={4}
-                  className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  value={formData.description}
-                  onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Variation A */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Variation A
-                  </label>
-                  <div className="mb-4">
-                    <div className="w-full h-40 border-2 border-dashed border-gray-600 rounded-lg flex items-center justify-center cursor-pointer hover:border-purple-500 transition-colors">
-                      <input
-                        type="file"
-                        className="hidden"
-                        onChange={(e) => handleImageUpload('variationA', e)}
-                        accept="image/*"
-                        id="variationA"
-                      />
-                      <label htmlFor="variationA" className="cursor-pointer text-center">
-                        <motion.div
-                          whileHover={{ scale: 1.05 }}
-                          className="text-gray-400"
-                        >
-                          <svg className="mx-auto h-12 w-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                          </svg>
-                          Upload image for Variation A
-                        </motion.div>
-                      </label>
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="Enter text for Variation A"
-                      className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                      value={formData.variationA.text}
-                      onChange={(e) => setFormData(prev => ({
-                        ...prev,
-                        variationA: { ...prev.variationA, text: e.target.value }
-                      }))}
-                    />
-                  </div>
-                </div>
-
-                {/* Variation B */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Variation B
-                  </label>
-                  <div className="mb-4">
-                    <div className="w-full h-40 border-2 border-dashed border-gray-600 rounded-lg flex items-center justify-center cursor-pointer hover:border-purple-500 transition-colors">
-                      <input
-                        type="file"
-                        className="hidden"
-                        onChange={(e) => handleImageUpload('variationB', e)}
-                        accept="image/*"
-                        id="variationB"
-                      />
-                      <label htmlFor="variationB" className="cursor-pointer text-center">
-                        <motion.div
-                          whileHover={{ scale: 1.05 }}
-                          className="text-gray-400"
-                        >
-                          <svg className="mx-auto h-12 w-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                          </svg>
-                          Upload image for Variation B
-                        </motion.div>
-                      </label>
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="Enter text for Variation B"
-                      className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                      value={formData.variationB.text}
-                      onChange={(e) => setFormData(prev => ({
-                        ...prev,
-                        variationB: { ...prev.variationB, text: e.target.value }
-                      }))}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <motion.button
-                type="submit"
-                className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-medium"
-                whileHover={{ scale: 1.02, boxShadow: "0 0 20px rgba(147, 51, 234, 0.3)" }}
-                whileTap={{ scale: 0.98 }}
-                onClick={handleLaunchCampaign}
-              >
-                Launch Campaign
-              </motion.button>
-            </form>
+      return (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-8"
+        >
+          <div>
+            <h2 className="text-2xl font-bold mb-2 text-white">Segment Customers</h2>
+            <p className="text-gray-400 mb-6">Import CRM data and create customer segments.</p>
           </div>
-        );
-      case 1:
-        return (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="space-y-8"
+
+          {/* CRM Data Import */}
+          <div className="flex items-center justify-between p-4 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10">
+      <div className="flex items-center space-x-4">
+        <div className="p-2 rounded-full bg-white/10">
+          <svg
+            className="w-6 h-6 text-gray-300"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
           >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            />
+          </svg>
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-white">CRM Data</h3>
+          <p className="text-sm text-gray-400">
+            Import customer data from your CRM
+          </p>
+        </div>
+      </div>
+      <motion.button
+  whileHover={{ scale: 1.02 }}
+  whileTap={{ scale: 0.98 }}
+  className="px-4 py-2 bg-navy-800 text-white rounded-lg hover:bg-navy-700 transition-colors"
+  onClick={() => {
+    // Start the delay to set crmImported to true after 2 seconds
+    setTimeout(() => {
+      setcrmImported(true);
+    }, 2000); // 2000ms = 2 seconds
+  }}
+>
+  {crmImported ? (
+    <span className="px-3 py-1 bg-green-600 text-white rounded-full">
+      Imported Data
+    </span>
+  ) : (
+    "Import Data"
+  )}
+</motion.button>
+
+    </div>
+
+          {/* Analytics Data Import */}
+          <div className="flex items-center justify-between p-4 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10">
+            <div className="flex items-center space-x-4">
+              <div className="p-2 rounded-full bg-white/10">
+                <svg className="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-white">Analytics</h3>
+                <p className="text-sm text-gray-400">Import paid analytics data</p>
+              </div>
+            </div>
+            <motion.button
+  whileHover={{ scale: 1.02 }}
+  whileTap={{ scale: 0.98 }}
+  className="px-4 py-2 bg-navy-800 text-white rounded-lg hover:bg-navy-700 transition-colors"
+  onClick={() => {
+    // Start the delay to set crmImported to true after 2 seconds
+    setTimeout(() => {
+      setanalyticsImported(true);
+    }, 2000); // 2000ms = 2 seconds
+  }}
+>
+  {analyticsImported ? (
+    <span className="px-3 py-1 bg-green-600 text-white rounded-full">
+      Imported Data
+    </span>
+  ) : (
+    "Import Data"
+  )}
+</motion.button>
+            
+          </div>
+          
+          {/*
+
+          {/* Input Prompt Box 
+<div className="mt-6 p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
+  <label htmlFor="inputPrompt" className="text-sm text-gray-400">Enter your prompt</label>
+  <input
+    type="text"
+    id="inputPrompt"
+    placeholder="Type something..."
+    className="mt-2 w-full px-4 py-2 text-white bg-transparent border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+  />
+</div>
+
+            */}
+
+
+          {/* Create Segments Button */}
+          <motion.button
+            type="button"
+            className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-medium mt-6"
+            whileHover={{ scale: 1.02, boxShadow: "0 0 20px rgba(147, 51, 234, 0.3)" }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleCreateSegments}
+            disabled={showLoadingOverlay}
+          >
+            Create Segments
+          </motion.button>
+        </motion.div>
+      );
+
+    
+
+      case 1:
+
+      return (
+        <div className="space-y-6">
+          <h2 className="text-2xl font-bold mb-2 text-white">Create A/B Test Campaign</h2>
+          <p className="text-gray-400 mb-6">Design your A/B test campaign for focus groups.</p>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold mb-2 text-white">Segment Customers</h2>
-              <p className="text-gray-400 mb-6">Import CRM data and create customer segments.</p>
-            </div>
-
-            {/* CRM Data Import */}
-            <div className="flex items-center justify-between p-4 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10">
-              <div className="flex items-center space-x-4">
-                <div className="p-2 rounded-full bg-white/10">
-                  <svg className="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white">CRM Data</h3>
-                  <p className="text-sm text-gray-400">Import customer data from your CRM</p>
-                </div>
-              </div>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="px-4 py-2 bg-navy-800 text-white rounded-lg hover:bg-navy-700 transition-colors"
-                onClick={() => {/* Handle CRM import */}}
-              >
-                Import Data
-              </motion.button>
-            </div>
-
-            {/* Analytics Data Import */}
-            <div className="flex items-center justify-between p-4 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10">
-              <div className="flex items-center space-x-4">
-                <div className="p-2 rounded-full bg-white/10">
-                  <svg className="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-white">Analytics</h3>
-                  <p className="text-sm text-gray-400">Import paid analytics data</p>
-                </div>
-              </div>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="px-4 py-2 bg-navy-800 text-white rounded-lg hover:bg-navy-700 transition-colors"
-                onClick={() => {/* Handle analytics import */}}
-              >
-                Import Data
-              </motion.button>
-            </div>
-
-            {/* Age Range Slider */}
-            <div className="space-y-4">
-              <label className="block text-sm font-medium text-gray-300">
-                Age Range: {formData.personas.ageRange[0]} - {formData.personas.ageRange[1]} years
-              </label>
-              <input
-                type="range"
-                min="20"
-                max="60"
-                className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                value={formData.personas.ageRange[1]}
-                onChange={(e) => setFormData(prev => ({
-                  ...prev,
-                  personas: {
-                    ...prev.personas,
-                    ageRange: [prev.personas.ageRange[0], parseInt(e.target.value)]
-                  }
-                }))}
-              />
-            </div>
-
-            {/* Gender Selection */}
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-300">
-                Gender
-              </label>
-              <select
-                className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
-                value={formData.personas.gender}
-                onChange={(e) => setFormData(prev => ({
-                  ...prev,
-                  personas: { ...prev.personas, gender: e.target.value }
-                }))}
-              >
-                <option value="">Select gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-
-            {/* Location Input */}
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-300">
-                Location
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Campaign Name
               </label>
               <input
                 type="text"
-                placeholder="Enter location"
+                placeholder="Enter campaign name"
                 className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                value={formData.personas.location}
-                onChange={(e) => setFormData(prev => ({
-                  ...prev,
-                  personas: { ...prev.personas, location: e.target.value }
-                }))}
+                value={formData.name}
+                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
               />
             </div>
 
-            {/* Create Segments Button */}
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Campaign Description
+              </label>
+              <textarea
+                placeholder="Describe your campaign"
+                rows={4}
+                className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                value={formData.description}
+                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Variation A */}
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Variation A
+                </label>
+                <div className="mb-4">
+                  <div className="w-full h-40 border-2 border-dashed border-gray-600 rounded-lg flex items-center justify-center cursor-pointer hover:border-purple-500 transition-colors">
+                    <input
+                      type="file"
+                      className="hidden"
+                      onChange={(e) => handleImageUpload('variationA', e)}
+                      accept="image/*"
+                      id="variationA"
+                    />
+                    <label htmlFor="variationA" className="cursor-pointer text-center">
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        className="text-gray-400"
+                      >
+                        <svg className="mx-auto h-12 w-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        Upload image for Variation A
+                      </motion.div>
+                    </label>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Enter text for Variation A"
+                    className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    value={formData.variationA.text}
+                    onChange={(e) => setFormData(prev => ({
+                      ...prev,
+                      variationA: { ...prev.variationA, text: e.target.value }
+                    }))}
+                  />
+                </div>
+              </div>
+
+              {/* Variation B */}
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Variation B
+                </label>
+                <div className="mb-4">
+                  <div className="w-full h-40 border-2 border-dashed border-gray-600 rounded-lg flex items-center justify-center cursor-pointer hover:border-purple-500 transition-colors">
+                    <input
+                      type="file"
+                      className="hidden"
+                      onChange={(e) => handleImageUpload('variationB', e)}
+                      accept="image/*"
+                      id="variationB"
+                    />
+                    <label htmlFor="variationB" className="cursor-pointer text-center">
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        className="text-gray-400"
+                      >
+                        <svg className="mx-auto h-12 w-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        Upload image for Variation B
+                      </motion.div>
+                    </label>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Enter text for Variation B"
+                    className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    value={formData.variationB.text}
+                    onChange={(e) => setFormData(prev => ({
+                      ...prev,
+                      variationB: { ...prev.variationB, text: e.target.value }
+                    }))}
+                  />
+                </div>
+              </div>
+            </div>
+
             <motion.button
-              type="button"
-              className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-medium mt-6"
+              type="submit"
+              className="w-full py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-medium"
               whileHover={{ scale: 1.02, boxShadow: "0 0 20px rgba(147, 51, 234, 0.3)" }}
               whileTap={{ scale: 0.98 }}
-              onClick={handleCreateSegments}
-              disabled={showLoadingOverlay}
+              onClick={handleLaunchCampaign}
             >
-              Create Segments
+              Launch Campaign
             </motion.button>
-          </motion.div>
-        );
+          </form>
+        </div>
+      );
+        
       case 2:
         return renderSimulationTab();
       default:
